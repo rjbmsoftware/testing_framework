@@ -1,0 +1,17 @@
+{
+  "name": "testing_framework",
+  "version": "1.0.0",
+  "description": "A place for me to learn about building testing frameworks",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.45.1",
+    "@types/node": "^20.14.9"
+  },
+  "dependencies": {
+    "typescript": "^5.5.3"
+  }
+}
