@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1
+services:
+    mysql:
+        image: docker.io/library/mysql:5.6
+        environment:
+            - MYSQL_ROOT_PASSWORD=root_password
+            - MYSQL_DATABASE=snipeit
+            - MYSQL_USER=snipeit_user
+            - MYSQL_PASSWORD=snipeit_password
+        ports:
+            - 127.0.0.1:3306:3306
+    snipeit:
+        image: docker.io/snipe/snipe-it:v7.0.7-alpine
+        environment:    
+            - APP_ENV=production
+            - APP_DEBUG=false
+            - APP_KEY=base64:ZG7oBacC8iO18V7m5kRxLXKxVWsnc3r5iREQvqzyQ8k=
+            - DB_CONNECTION=mysql
+            - DB_HOST=mysql
+            - DB_DATABASE=snipeit
+            - DB_USERNAME=snipeit_user
+            - DB_PASSWORD=snipeit_password
+            - APP_URL=http://127.0.0.1:27015
+        ports:
+            - 127.0.0.1:27015:80
