@@ -1,7 +1,8 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.7.0
 services:
     mysql:
-        image: docker.io/library/mysql:5.6
+        # image: docker.io/library/mysql:5.6
+        image: docker.io/library/mysql:8.4.2
         environment:
             - MYSQL_ROOT_PASSWORD=root_password
             - MYSQL_DATABASE=snipeit
@@ -9,7 +10,14 @@ services:
             - MYSQL_PASSWORD=snipeit_password
         ports:
             - 127.0.0.1:3306:3306
+        volumes:
+            - db_data:/var/lib/mysql
     snipeit:
+        depends_on:
+            mysql:
+                condition: service_healthy
+        # TODO: remove this as mysql was born ready
+        entrypoint: /bin/sh -c "sleep 20s && /entrypoint.sh"
         image: docker.io/snipe/snipe-it:v7.0.7-alpine
         environment:    
             - APP_ENV=production
@@ -23,3 +31,16 @@ services:
             - APP_URL=http://127.0.0.1:27015
         ports:
             - 127.0.0.1:27015:80
+        volumes:
+            - snipe_data_config:/config
+            - snipe_data:/var/lib/snipeit
+volumes:
+    snipe_data:
+        driver:
+            local
+    snipe_data_config:
+        driver:
+            local
+    db_data:
+        driver:
+            local
