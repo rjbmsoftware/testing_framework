@@ -9,8 +9,7 @@ snipeit_config_volume=testing_framework_snipe_data_config
 container_software=podman
 # container_software=docker
 
-$container_software volume rm $database_volume $snipeit_volume $snipeit_config_volume
-
+./tear_down.sh
 
 back_up_directory=../volume_back_ups
 back_up_volume=/backup
