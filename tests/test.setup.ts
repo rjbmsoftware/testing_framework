@@ -6,6 +6,7 @@ setup('authenticate', async ({ page }) => {
     await page.goto('http://localhost:27015')
     await page.locator('#username').fill('admin')
     await page.locator('#password').fill('Password1234!')
+    await page.getByLabel('Remember Me').click()
     await page.locator('button:text("Login")').click();
 
     await page.waitForURL('http://127.0.0.1:27015/');
