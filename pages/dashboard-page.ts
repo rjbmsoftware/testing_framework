@@ -1,12 +1,11 @@
-import type { Page, Locator } from '@playwright/test';
-import * as dotenv from 'dotenv';
+import type { Page } from '@playwright/test';
+import { EnvironmentVariables } from '../libraries/environment-variables';
 
 export class DashboardPage {
     public readonly url: string;
 
     constructor(public readonly page: Page) {
-        dotenv.config();
-        this.url = process.env.BASE_URL ?? '';
+        this.url = EnvironmentVariables.instance.baseUrl;
     }
 
     async goto(): Promise<void> {
