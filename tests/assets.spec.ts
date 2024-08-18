@@ -10,6 +10,5 @@ const test = base.extend<{ assetsPage: AssetsPage }>({
 });
 
 test('page heading is all assets', async ({ assetsPage }) => {
-    // expect(assetsPage.getHeading()).toContain("All Assets");
     expect(assetsPage.pageHeading).toHaveText("All Assets")
 });
