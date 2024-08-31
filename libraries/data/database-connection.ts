@@ -1,12 +1,4 @@
-import mysql, { ConnectionOptions, Pool, PoolConnection } from 'mysql2/promise';
-
-const access: ConnectionOptions = {
-  user: 'snipeit_user',
-  database: 'snipeit',
-  password: 'snipeit_password'
-};
-
-const conn = mysql.createConnection(access);
+import mysql, { Pool, PoolConnection } from 'mysql2/promise';
 
 class MySQLConnections {
   static #instance: MySQLConnections;
@@ -21,13 +13,17 @@ class MySQLConnections {
     });
   }
 
-  public static async getConnection(): Promise<PoolConnection> {
+  public async getConnection(): Promise<PoolConnection> {
+    return await MySQLConnections.getInstance().pool.getConnection();
+  }
+
+  public static getInstance(): MySQLConnections {
     if (!MySQLConnections.#instance) {
       MySQLConnections.#instance = new MySQLConnections();
     }
 
-    return await this.#instance.pool.getConnection();
+    return MySQLConnections.#instance;
   }
 }
 
-export { conn, MySQLConnections };
+export { MySQLConnections };
