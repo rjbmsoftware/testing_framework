@@ -1,5 +1,6 @@
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import { EnvironmentVariables } from '../../libraries/environment-variables';
+import { CompaniesPage } from './companies-page';
 
 export class CreateCompanyPage {
     public readonly url: string;
@@ -30,11 +31,13 @@ export class CreateCompanyPage {
      * @param fax 
      * @param email 
      */
-    async createCompany(name: string, phone: string, fax: string, email: string): Promise<void> {
+    async createCompany(name: string, phone: string, fax: string, email: string): Promise<CompaniesPage> {
         await this.nameTextInput.fill(name);
         await this.phoneNumberTextInput.fill(phone);
         await this.faxNumberTextInput.fill(fax);
         await this.emailTextInput.fill(email);
         await this.saveButton.click();
+
+        return new CompaniesPage(this.page);
     }
 }

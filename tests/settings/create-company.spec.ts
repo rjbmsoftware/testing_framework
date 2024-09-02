@@ -3,6 +3,7 @@ import { CreateCompanyPage } from "../../pages/settings/create-company-page";
 import { v4 as uuid } from "uuid";
 import { MySQLConnections } from "../../libraries/data/database-connection";
 import { CompaniesRepository } from "../../libraries/data/companies-repository";
+import { CompaniesPage } from "../../pages/settings/companies-page";
 
 const test = base.extend<{ createCompanyPage: CreateCompanyPage, companiesRepository: CompaniesRepository }>({
     createCompanyPage: async ({ page }, use) => {
@@ -23,11 +24,14 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
     const faxNumber = phoneNumber;
     const email = 'test@test.com';
     const companyName: string = uuid();
-    await createCompanyPage.createCompany(companyName, phoneNumber, faxNumber, email);
+    const companiesPage: CompaniesPage = await createCompanyPage.createCompany(companyName, phoneNumber, faxNumber, email);
 
-    let company = await companiesRepository.findCompanyByName(companyName);
+    const company = await companiesRepository.findCompanyByName(companyName);
 
     expect(company?.name).toBe(companyName);
 
-    // verify user navigated to company page with banner display
+    const isCompaniesPage = await companiesPage.isCompaniesPage();
+    expect(isCompaniesPage).toBeTruthy();
+    const someLocator = await companiesPage.successBanner();
+    await expect(someLocator).toHaveText(/.*Company created successfully.*/);
 });
