@@ -18,6 +18,7 @@ export class CompaniesPage {
     }
 
     async isCompaniesPage(): Promise<boolean> {
+        // TODO: add wait for the loading spinner
         expect(this.page.url()).toBe(this.url);
         return true;
     }

@@ -8,14 +8,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.45.1",
-    "@types/node": "^20.16.1",
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^22.5.4",
     "@types/uuid": "^10.0.0"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "mysql2": "^3.11.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "uuid": "^10.0.0"
   }
 }

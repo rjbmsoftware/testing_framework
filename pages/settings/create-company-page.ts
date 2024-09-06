@@ -16,7 +16,9 @@ export class CreateCompanyPage {
         this.phoneNumberTextInput = page.getByLabel('phone');
         this.faxNumberTextInput = page.getByLabel('Fax');
         this.emailTextInput = page.getByLabel('Email');
-        this.saveButton = page.getByRole('button', { name: 'Save' });
+        // this.saveButton = page.getByRole('button', { name: 'Save' });
+        // this.saveButton = page.locator('[accesskey="s"]');
+        this.saveButton = page.getByText(/Save/);
     }
 
     async goto(): Promise<void> {
@@ -32,11 +34,19 @@ export class CreateCompanyPage {
      * @param email 
      */
     async createCompany(name: string, phone: string, fax: string, email: string): Promise<CompaniesPage> {
+
         await this.nameTextInput.fill(name);
         await this.phoneNumberTextInput.fill(phone);
         await this.faxNumberTextInput.fill(fax);
         await this.emailTextInput.fill(email);
-        await this.saveButton.click();
+
+
+        await expect(this.saveButton).toBeVisible();
+        await expect(this.saveButton).toBeEnabled();
+
+        // force to resolve issue with headless webkit cannot find the button
+        // even with it being enabled, visible and not obstructed
+        await this.saveButton.click({force: true});
 
         return new CompaniesPage(this.page);
     }
