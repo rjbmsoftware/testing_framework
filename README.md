@@ -17,7 +17,6 @@ A place for me to learn about building testing frameworks
 - [ ] Page object components
 - [x] Setup login in a way that it is not repeated per test
 - [ ] Document how to run the project
-
 - [ ] Tests
     - [x] Object creation
     - [ ] Object deletion
