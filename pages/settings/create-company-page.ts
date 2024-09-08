@@ -16,8 +16,6 @@ export class CreateCompanyPage {
         this.phoneNumberTextInput = page.getByLabel('phone');
         this.faxNumberTextInput = page.getByLabel('Fax');
         this.emailTextInput = page.getByLabel('Email');
-        // this.saveButton = page.getByRole('button', { name: 'Save' });
-        // this.saveButton = page.locator('[accesskey="s"]');
         this.saveButton = page.getByText(/Save/);
     }
 

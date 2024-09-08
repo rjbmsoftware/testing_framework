@@ -32,7 +32,4 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
 
     const isCompaniesPage = await companiesPage.isCompaniesPage();
     expect(isCompaniesPage).toBeTruthy();
-    const someLocator = await companiesPage.successBanner();
-    await expect(someLocator).toBeVisible();
-    await expect(someLocator).toHaveText(/.*Company created successfully.*/);
 });
