@@ -7,9 +7,9 @@ A place for me to learn about building testing frameworks
 ## TODO:
 
 - [ ] Automated run / build
-- [ ] Restore database to the initial state
-- [ ] Automated setup of the application
-- [ ] Automated tear down of the application
+- [x] Restore database to the initial state
+- [x] Automated setup of the application
+- [x] Automated tear down of the application
 - [ ] Push reports to storage
 - [ ] Fixtures that use the database
 - [ ] Fixtures that use the products APIs

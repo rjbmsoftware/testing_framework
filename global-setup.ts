@@ -8,7 +8,6 @@ async function globalSetup(config: FullConfig) {
     execSync('podman-compose down');
     execSync('./setup_teardown_scripts/setup.sh')
     execSync('podman-compose up -d');
-    await delay(30000); // TODO: remove by fixing the setup delay
     console.log('End global setup');
 }
 
