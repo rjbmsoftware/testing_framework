@@ -33,3 +33,7 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
     const isCompaniesPage = await companiesPage.isCompaniesPage();
     expect(isCompaniesPage).toBeTruthy();
 });
+
+test('company deleted', async ({ companiesRepository }) => {
+    companiesRepository.createCompany('testy test', '123456', '123456', 'test@test.com');
+});
