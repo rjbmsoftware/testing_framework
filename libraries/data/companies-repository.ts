@@ -14,6 +14,8 @@ export class CompaniesRepository {
             (name, fax, email, phone, created_at, updated_at)
         VALUES
             (?, ?, ?, ?, NOW(), NOW());
+
+        SELECT LAST_INSERT_ID();
     `;
 
     constructor(database_connection_provider: MySQLConnections) {
@@ -45,7 +47,7 @@ export class CompaniesRepository {
 
         this.releaseConnection();
 
-        return rows[0].value;
+        return rows[0][0].value;
     }
 
     releaseConnection(): void {

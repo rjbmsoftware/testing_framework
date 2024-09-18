@@ -32,4 +32,11 @@ export class CompaniesPage {
     async successBanner(): Promise<Locator> {
         return this.successBannerLocator;
     }
+
+    async deleteCompanyByName(companyName: string): Promise<void> {
+        await this.page.locator('tr)').filter({ hasText: companyName })
+        .getByRole('link', { name: 'Delete' }).click();
+
+        await this.page.getByRole('button', { name: 'Yes' }).click();
+    }
 }

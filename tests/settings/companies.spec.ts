@@ -12,7 +12,7 @@ const test = base.extend<{ createCompanyPage: CreateCompanyPage, companiesReposi
         await use(createCompanyPage);
     },
 
-    companiesRepository: async ({}, use) => {
+    companiesRepository: async ({ }, use) => {
         let instance = MySQLConnections.getInstance();
         const companiesRepository = new CompaniesRepository(instance);
         await use(companiesRepository);
@@ -24,7 +24,9 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
     const faxNumber = phoneNumber;
     const email = 'test@test.com';
     const companyName: string = uuid();
-    const companiesPage: CompaniesPage = await createCompanyPage.createCompany(companyName, phoneNumber, faxNumber, email);
+    const companiesPage: CompaniesPage = await createCompanyPage.createCompany(
+        companyName, phoneNumber, faxNumber, email
+    );
 
     const company = await companiesRepository.findCompanyByName(companyName);
 
@@ -35,5 +37,10 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
 });
 
 test('company deleted', async ({ companiesRepository }) => {
-    companiesRepository.createCompany('testy test', '123456', '123456', 'test@test.com');
+    const name = 'testy test';
+    const phoneFaxNumber = '123456'
+    const email = 'test@test.com';
+    const companyId = await companiesRepository.createCompany(
+        name, phoneFaxNumber, phoneFaxNumber, email
+    );
 });
