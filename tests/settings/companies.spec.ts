@@ -5,7 +5,9 @@ import { MySQLConnections } from "../../libraries/data/database-connection";
 import { CompaniesRepository } from "../../libraries/data/companies-repository";
 import { CompaniesPage } from "../../pages/settings/companies-page";
 
-const test = base.extend<{ createCompanyPage: CreateCompanyPage, companiesRepository: CompaniesRepository }>({
+const test = base.extend<{ createCompanyPage: CreateCompanyPage,
+                           companiesPage: CompaniesPage,
+                           companiesRepository: CompaniesRepository }>({
     createCompanyPage: async ({ page }, use) => {
         const createCompanyPage = new CreateCompanyPage(page);
         await createCompanyPage.goto();
@@ -16,7 +18,12 @@ const test = base.extend<{ createCompanyPage: CreateCompanyPage, companiesReposi
         let instance = MySQLConnections.getInstance();
         const companiesRepository = new CompaniesRepository(instance);
         await use(companiesRepository);
-    }
+    },
+
+    companiesPage: async ({ page }, use) => {
+        const companiesPage = new CompaniesPage(page);
+        await use(companiesPage);
+    },
 });
 
 test('company created', async ({ createCompanyPage, companiesRepository }) => {
@@ -36,11 +43,17 @@ test('company created', async ({ createCompanyPage, companiesRepository }) => {
     expect(isCompaniesPage).toBeTruthy();
 });
 
-test('company deleted', async ({ companiesRepository }) => {
-    const name = 'testy test';
+test('company deleted', async ({ companiesPage, companiesRepository }) => {
+    const companyName: string = uuid();
     const phoneFaxNumber = '123456'
     const email = 'test@test.com';
-    const companyId = await companiesRepository.createCompany(
-        name, phoneFaxNumber, phoneFaxNumber, email
+    await companiesRepository.createCompany(
+        companyName, phoneFaxNumber, phoneFaxNumber, email
     );
+
+    await companiesPage.goto();
+    await companiesPage.deleteCompanyByName(companyName);
+
+    const company = await companiesRepository.findCompanyByName(companyName);
+    expect(company).toBeUndefined();
 });

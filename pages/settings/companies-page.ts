@@ -17,6 +17,7 @@ export class CompaniesPage {
 
     async goto(): Promise<void> {
         await this.page.goto(this.url);
+        await this.waitForPageLoadingSpinner();
     }
 
     async waitForPageLoadingSpinner(): Promise<void> {
@@ -34,8 +35,8 @@ export class CompaniesPage {
     }
 
     async deleteCompanyByName(companyName: string): Promise<void> {
-        await this.page.locator('tr)').filter({ hasText: companyName })
-        .getByRole('link', { name: 'Delete' }).click();
+        await this.page.locator('tr').filter({ hasText: companyName })
+            .getByRole('link', { name: 'Delete' }).click();
 
         await this.page.getByRole('button', { name: 'Yes' }).click();
     }

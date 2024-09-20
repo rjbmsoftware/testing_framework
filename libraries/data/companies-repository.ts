@@ -10,13 +10,12 @@ export class CompaniesRepository {
     private readonly findCompanyByNameSQL = "SELECT * FROM companies WHERE name = ?;";
 
     private readonly createCompanySQL = `
-        INSERT INTO companies
-            (name, fax, email, phone, created_at, updated_at)
-        VALUES
-            (?, ?, ?, ?, NOW(), NOW());
+    INSERT INTO companies
+        (name, fax, email, phone, created_at, updated_at)
+    VALUES
+        (?, ?, ?, ?, NOW(), NOW());
+`;
 
-        SELECT LAST_INSERT_ID();
-    `;
 
     constructor(database_connection_provider: MySQLConnections) {
         this.database_connection_provider = database_connection_provider;
@@ -38,16 +37,13 @@ export class CompaniesRepository {
         return company;
     }
 
-    async createCompany(name: string, phone: string, fax: string, email: string): Promise<number> {
+    async createCompany(name: string, phone: string, fax: string, email: string): Promise<void> {
         let conn = await this.getConnection();
 
         const args = [name, fax, phone, email];
-
-        let rows = await conn.execute<SingleNumberResult[]>(this.createCompanySQL, args);
+        await conn.execute(this.createCompanySQL, args);
 
         this.releaseConnection();
-
-        return rows[0][0].value;
     }
 
     releaseConnection(): void {
