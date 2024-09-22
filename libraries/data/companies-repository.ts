@@ -1,7 +1,6 @@
 import { PoolConnection } from "mysql2/promise";
 import { MySQLConnections } from "./database-connection";
 import { Company } from "./interfaces/company-interface";
-import { SingleNumberResult } from "./interfaces/general-query-interfaces";
 
 export class CompaniesRepository {
     private readonly database_connection_provider: MySQLConnections;

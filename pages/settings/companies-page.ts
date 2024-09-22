@@ -36,8 +36,8 @@ export class CompaniesPage {
 
     async deleteCompanyByName(companyName: string): Promise<void> {
         await this.page.locator('tr').filter({ hasText: companyName })
-            .getByRole('link', { name: 'Delete' }).click();
+            .getByRole('link', { name: 'Delete' }).click({ force: true });
 
-        await this.page.getByRole('button', { name: 'Yes' }).click();
+        await this.page.getByRole('button', { name: 'Yes' }).click({ force: true });
     }
 }
