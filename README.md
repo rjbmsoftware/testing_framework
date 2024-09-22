@@ -11,7 +11,7 @@ A place for me to learn about building testing frameworks
 - [x] Automated setup of the application
 - [x] Automated tear down of the application
 - [ ] Push reports to storage
-- [ ] Fixtures that use the database
+- [x] Fixtures that use the database
 - [ ] Fixtures that use the products APIs
 - [ ] Page objects
 - [ ] Page object components
@@ -19,6 +19,6 @@ A place for me to learn about building testing frameworks
 - [ ] Document how to run the project
 - [ ] Tests
     - [x] Object creation
-    - [ ] Object deletion
+    - [x] Object deletion
     - [ ] File upload
     - [ ] Download a file
