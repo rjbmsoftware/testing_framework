@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { EnvironmentVariables } from "../../libraries/environment-variables";
 
 export class LocationsPage {
@@ -10,5 +10,10 @@ export class LocationsPage {
         this.page = page;
         this.url = EnvironmentVariables.instance.baseUrl + '/locations';
         this.loadingSpinner = this.page.locator('loading-text');
+    }
+
+    isLocationsPage(): boolean {
+        expect(this.page.url()).toBe(this.url);
+        return true;
     }
 }

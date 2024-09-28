@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { EnvironmentVariables } from "../../libraries/environment-variables";
+import { LocationsPage } from "./locations-page";
 
 export class CreateLocationsPage {
     readonly page: Page;
@@ -21,8 +22,10 @@ export class CreateLocationsPage {
         await this.page.goto(this.url);
     }
 
-    async createLocation(name: string): Promise<void> {
+    async createLocation(name: string): Promise<LocationsPage> {
         await this.locationNameTextInput.fill(name);
         await this.createButton.click();
+
+        return new LocationsPage(this.page);
     }
 }
