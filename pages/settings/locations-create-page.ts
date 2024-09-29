@@ -24,7 +24,7 @@ export class CreateLocationsPage {
 
     async createLocation(name: string): Promise<LocationsPage> {
         await this.locationNameTextInput.fill(name);
-        await this.createButton.click();
+        await this.createButton.click({force: true});
 
         return new LocationsPage(this.page);
     }
