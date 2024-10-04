@@ -10,6 +10,7 @@ export class EnvironmentVariables {
     public readonly dbUsername: string;
     public readonly dbPassword: string;
     public readonly dbMaxConnectionsPerPool: number;
+    public readonly apiKey: string;
 
     private constructor() {
         dotenv.config()
@@ -21,6 +22,7 @@ export class EnvironmentVariables {
         this.dbUsername = process.env.DB_USERNAME ?? '';
         this.dbPassword = process.env.DB_PASSWORD ?? '';
         this.dbMaxConnectionsPerPool = parseInt(process.env.DB_MAX_CONNECTIONS_PER_POOL ?? "5");
+        this.apiKey = process.env.API_KEY ?? '';
     }
 
     public static get instance(): EnvironmentVariables{
