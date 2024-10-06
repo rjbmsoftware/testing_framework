@@ -12,7 +12,7 @@ A place for me to learn about building testing frameworks
 - [x] Automated tear down of the application
 - [ ] Push reports to storage
 - [x] Fixtures that use the database
-- [ ] Fixtures that use the products APIs
+- [x] Fixtures that use the products APIs
 - [ ] Page objects
 - [ ] Page object components
 - [x] Setup login in a way that it is not repeated per test

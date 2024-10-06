@@ -25,5 +25,6 @@ test('location created', async ({ createLocationsPage, locationsRepository }) =>
     const locationsPage: LocationsPage = await createLocationsPage.createLocation(locationName);
 
     expect(locationsPage.isLocationsPage()).toBeTruthy();
-    expect(locationsRepository.isLocationAvailable(locationName)).toBeTruthy();
+    const locationExists: boolean = await locationsRepository.isLocationAvailable(locationName);
+    expect(locationExists).toBeTruthy();
 });
