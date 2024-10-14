@@ -5,9 +5,11 @@ import { EnvironmentVariables } from "../../libraries/environment-variables";
 export class CreateAssetModelPage {
     readonly url: string;
     readonly page: Page;
+
     readonly assetModelName: Locator;
     readonly categoryNameDropDown: Locator;
     readonly saveButton: Locator;
+    readonly fileUploadButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -16,6 +18,7 @@ export class CreateAssetModelPage {
         this.assetModelName = page.getByLabel('name');
         this.categoryNameDropDown = page.getByLabel('Select a Category');
         this.saveButton = page.getByRole('button', { name: 'Save' }).first();
+        this.fileUploadButton = page.getByText('Select File...');
     }
 
     async goto(): Promise<void> {
@@ -27,12 +30,14 @@ export class CreateAssetModelPage {
      * Max upload size allowed is 2M.
      * @param name 
      * @param categoryName 
-     * @param image_path 
+     * @param image_path absolute path to image file
      */
     async createAssetModel(name: string, categoryName: string, image_path: string): Promise<void> {
         await this.assetModelName.fill(name);
         await this.categoryNameDropDown.click();
-        await this.page.getByText('test asset model category').click();
+        await this.page.getByText(categoryName).click();
+        await this.fileUploadButton.setInputFiles(image_path)
+
         await this.saveButton.click();
     }
 }
