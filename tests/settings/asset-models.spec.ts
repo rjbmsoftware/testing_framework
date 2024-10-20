@@ -1,4 +1,4 @@
-import { test as base } from "@playwright/test";
+import { test as base, expect } from "@playwright/test";
 import { v4 as uuid } from "uuid";
 import { getComputerImageFixturePath } from "../../libraries/constants";
 import { CategoriesRepository } from "../../libraries/data/categories-repository";
@@ -23,7 +23,15 @@ const test = base.extend<{
 test("create asset model", async ({ createAssetModelPage, categoriesRepository }) => {
     const categoryName = await categoriesRepository.createCategory();
     const assetModelName = uuid();
-    await createAssetModelPage.createAssetModel(assetModelName, categoryName, getComputerImageFixturePath());
-    // create the asset model uploading an image
-    // check asset model image is displayed on models page
+    const assetModelPage = await createAssetModelPage.createAssetModel(
+        assetModelName, categoryName, getComputerImageFixturePath()
+    );
+
+
+    expect(assetModelPage.isAssetModelsPage()).toBeTruthy();
+    // assert asset model is matches uploaded image
+        // get the asset model
+        // from the asset model find the image
+        // download the image and compare
+    // TODO: fix default browser window size
 });
