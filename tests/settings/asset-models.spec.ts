@@ -33,5 +33,4 @@ test("create asset model", async ({ createAssetModelPage, categoriesRepository }
         // get the asset model
         // from the asset model find the image
         // download the image and compare
-    // TODO: fix default browser window size
 });

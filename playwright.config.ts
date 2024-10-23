@@ -44,7 +44,11 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json'
+        storageState: 'playwright/.auth/user.json',
+        launchOptions: {
+          args: ['--start-maximized'],
+        },
+        viewport: {width: 1400, height: 700},
       },
       dependencies: ['setup'],
     },
@@ -53,7 +57,11 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        storageState: 'playwright/.auth/user.json'
+        storageState: 'playwright/.auth/user.json',
+        launchOptions: {
+          args: ['--start-maximized'],
+        },
+        viewport: {width: 1400, height: 700},
       },
       dependencies: ['setup'],
     },
@@ -62,7 +70,11 @@ export default defineConfig({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
-        storageState: 'playwright/.auth/user.json'
+        storageState: 'playwright/.auth/user.json',
+        launchOptions: {
+          args: ['--start-maximized'],
+        },
+        viewport: {width: 1400, height: 700},
       },
       dependencies: ['setup'],
     },
