@@ -22,3 +22,4 @@ A place for me to learn about building testing frameworks
     - [x] Object deletion
     - [ ] File upload
     - [ ] Download a file
+    - [ ] Visual tests (BackstopJS)
