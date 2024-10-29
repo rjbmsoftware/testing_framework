@@ -18,7 +18,7 @@ export class ModelsImageRepository {
      */
     async getImage(imagePath: string): Promise<string> {
         const imageUrl = `${this.url}/${imagePath}`;
-        const imageFilePath = path.join('.', 'temporary-files', imagePath);
+        const imageFilePath = path.resolve(path.join('.', 'temporary-files', imagePath));
 
         await axios.get(imageUrl, {responseType: 'stream'}).then(function (response) {
             response.data.pipe(fs.createWriteStream(imageFilePath));

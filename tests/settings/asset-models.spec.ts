@@ -6,6 +6,8 @@ import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-p
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
 import { MySQLConnections } from "../../libraries/data/database-connection";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
+import fs from "node:fs/promises"
+// import fs from "node:fs"
 
 const test = base.extend<{
     createAssetModelPage: CreateAssetModelPage,
@@ -61,7 +63,17 @@ test("create asset model", async ({
     expect(assetModel).toBeTruthy();
 
     if (assetModel && assetModel.image) {
-        const imageFilePath = modelsImageRepository.getImage(assetModel.image);
+        const imageFilePath = await modelsImageRepository.getImage(assetModel.image);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 250));
+            const dataFromSUT = await fs.readFile(imageFilePath);
+            const dataFromFixture = await fs.readFile(getComputerImageFixturePath());
+            // expect(dataFromSUT).toEqual(dataFromFixture);
+            // expect(true).toEqual(false);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
 });
