@@ -1,6 +1,6 @@
 import { EnvironmentVariables } from "../environment-variables";
 import axios from "axios";
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import path from "node:path";
 
 export class ModelsImageRepository {
@@ -18,11 +18,10 @@ export class ModelsImageRepository {
      */
     async getImage(imagePath: string): Promise<string> {
         const imageUrl = `${this.url}/${imagePath}`;
-        const imageFilePath = path.resolve(path.join('.', 'temporary-files', imagePath));
+        const imageFilePath = path.resolve(path.join('temporary-files', imagePath));
 
-        await axios.get(imageUrl, {responseType: 'stream'}).then(function (response) {
-            response.data.pipe(fs.createWriteStream(imageFilePath));
-        });
+        const fileResponse = await axios.get(imageUrl, {responseType: 'stream'});
+        await fs.writeFile(imageFilePath, fileResponse.data);
 
         return imageFilePath;
     }

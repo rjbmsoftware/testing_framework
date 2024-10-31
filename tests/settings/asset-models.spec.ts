@@ -6,7 +6,8 @@ import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-p
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
 import { MySQLConnections } from "../../libraries/data/database-connection";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
-import fs from "node:fs/promises"
+import fs from "node:fs/promises";
+import Pixelmatch from "pixelmatch";
 // import fs from "node:fs"
 
 const test = base.extend<{
@@ -55,9 +56,6 @@ test("create asset model", async ({
 
     expect(assetModelPage.isAssetModelsPage()).toBeTruthy();
 
-    // assert asset model is matches uploaded image, starting to look like two tests
-    // --get the asset model
-    // --from the asset model find the image
     // download the image and compare
     const assetModel = await assetModelsRepository.findByName(assetModelName);
     expect(assetModel).toBeTruthy();
@@ -66,11 +64,9 @@ test("create asset model", async ({
         const imageFilePath = await modelsImageRepository.getImage(assetModel.image);
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 250));
             const dataFromSUT = await fs.readFile(imageFilePath);
             const dataFromFixture = await fs.readFile(getComputerImageFixturePath());
-            // expect(dataFromSUT).toEqual(dataFromFixture);
-            // expect(true).toEqual(false);
+            Pixelmatch(dataFromSUT, dataFromFixture, );
         } catch (err) {
             console.log(err);
         }
