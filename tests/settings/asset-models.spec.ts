@@ -6,9 +6,8 @@ import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-p
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
 import { MySQLConnections } from "../../libraries/data/database-connection";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
-import fs from "node:fs/promises";
-import Pixelmatch from "pixelmatch";
-// import fs from "node:fs"
+import { Jimp } from "jimp";
+
 
 const test = base.extend<{
     createAssetModelPage: CreateAssetModelPage,
@@ -47,7 +46,6 @@ test("create asset model", async ({
     assetModelsRepository,
     modelsImageRepository
 }) => {
-
     const categoryName = await categoriesRepository.createCategory();
     const assetModelName = uuid();
     const assetModelPage = await createAssetModelPage.createAssetModel(
@@ -55,21 +53,35 @@ test("create asset model", async ({
     );
 
     expect(assetModelPage.isAssetModelsPage()).toBeTruthy();
-
-    // download the image and compare
     const assetModel = await assetModelsRepository.findByName(assetModelName);
-    expect(assetModel).toBeTruthy();
 
-    if (assetModel && assetModel.image) {
-        const imageFilePath = await modelsImageRepository.getImage(assetModel.image);
 
-        try {
-            const dataFromSUT = await fs.readFile(imageFilePath);
-            const dataFromFixture = await fs.readFile(getComputerImageFixturePath());
-            Pixelmatch(dataFromSUT, dataFromFixture, );
-        } catch (err) {
-            console.log(err);
-        }
+    // TODO: find where to put this, typescript type shenanigans
+    function assertExists<T>(value: T | null | undefined): asserts value is T {
+        if (value == null) throw new Error("Value does not exist");
     }
 
+    assertExists(assetModel?.image);
+    const imageFilePath = await modelsImageRepository.getImage(assetModel?.image);
+
+    const img1 = await Jimp.read(imageFilePath);
+    const img2 = await Jimp.read(getComputerImageFixturePath());
+
+    if (img1.bitmap.width !== img2.bitmap.width || img1.bitmap.height !== img2.bitmap.height) {
+        throw new Error('Images must have the same dimensions for comparison');
+    }
+
+    // TODO: remove dynamic import
+    const Pixelmatch = (await import('pixelmatch')).default;
+
+    const numDiffPixels = Pixelmatch(
+        img1.bitmap.data,
+        img2.bitmap.data,
+        null, // no diff output image needed
+        img1.bitmap.width,
+        img1.bitmap.height,
+        { threshold: 0.1 }
+    );
+
+    expect(numDiffPixels).toBe(0);
 });
