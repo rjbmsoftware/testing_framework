@@ -1,12 +1,13 @@
 import { test as base, expect } from "@playwright/test";
 import { v4 as uuid } from "uuid";
 import { getComputerImageFixturePath } from "../../libraries/constants";
-import { CategoriesRepository } from "../../libraries/data/categories-repository";
-import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-page";
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
+import { CategoriesRepository } from "../../libraries/data/categories-repository";
 import { MySQLConnections } from "../../libraries/data/database-connection";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
-import { Jimp } from "jimp";
+import { assertExists } from "../../libraries/helpers";
+import { compareImages } from "../../libraries/image-comparison";
+import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-page";
 
 
 const test = base.extend<{
@@ -40,7 +41,7 @@ const test = base.extend<{
     }
 });
 
-test("create asset model", async ({
+test("create asset model, verifying the asset model, associated image", async ({
     createAssetModelPage,
     categoriesRepository,
     assetModelsRepository,
@@ -48,6 +49,8 @@ test("create asset model", async ({
 }) => {
     const categoryName = await categoriesRepository.createCategory();
     const assetModelName = uuid();
+
+    // fill create asset model and check user navigates to asset model list page
     const assetModelPage = await createAssetModelPage.createAssetModel(
         assetModelName, categoryName, getComputerImageFixturePath()
     );
@@ -55,33 +58,9 @@ test("create asset model", async ({
     expect(assetModelPage.isAssetModelsPage()).toBeTruthy();
     const assetModel = await assetModelsRepository.findByName(assetModelName);
 
-
-    // TODO: find where to put this, typescript type shenanigans
-    function assertExists<T>(value: T | null | undefined): asserts value is T {
-        if (value == null) throw new Error("Value does not exist");
-    }
-
+    // compare asset image with actual
     assertExists(assetModel?.image);
-    const imageFilePath = await modelsImageRepository.getImage(assetModel?.image);
-
-    const img1 = await Jimp.read(imageFilePath);
-    const img2 = await Jimp.read(getComputerImageFixturePath());
-
-    if (img1.bitmap.width !== img2.bitmap.width || img1.bitmap.height !== img2.bitmap.height) {
-        throw new Error('Images must have the same dimensions for comparison');
-    }
-
-    // TODO: remove dynamic import
-    const Pixelmatch = (await import('pixelmatch')).default;
-
-    const numDiffPixels = Pixelmatch(
-        img1.bitmap.data,
-        img2.bitmap.data,
-        null, // no diff output image needed
-        img1.bitmap.width,
-        img1.bitmap.height,
-        { threshold: 0.1 }
-    );
-
+    const imageFilePath = await modelsImageRepository.getImage(assetModel.image);
+    const numDiffPixels = await compareImages(imageFilePath, getComputerImageFixturePath());
     expect(numDiffPixels).toBe(0);
 });
