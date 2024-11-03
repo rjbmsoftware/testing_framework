@@ -1,9 +1,9 @@
-import { test as base, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test as base } from "../../libraries/extended-test";
 import { v4 as uuid } from "uuid";
 import { getComputerImageFixturePath } from "../../libraries/constants";
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
 import { CategoriesRepository } from "../../libraries/data/categories-repository";
-import { MySQLConnections } from "../../libraries/data/database-connection";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
 import { assertExists } from "../../libraries/helpers";
 import { compareImages } from "../../libraries/image-comparison";
@@ -27,11 +27,8 @@ const test = base.extend<{
         await use(categoriesRepository);
     },
 
-
-    assetModelsRepository: async ({ }, use) => {
-        // TODO: refactor into base test
-        const instance = MySQLConnections.getInstance();
-        const assetModelsRepository = new AssetModelsRepository(instance);
+    assetModelsRepository: async ({ mySQLConnections }, use) => {
+        const assetModelsRepository = new AssetModelsRepository(mySQLConnections);
         await use(assetModelsRepository);
     },
 
