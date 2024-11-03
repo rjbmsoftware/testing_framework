@@ -35,11 +35,11 @@ export class CreateAssetModelPage {
      */
     async createAssetModel(name: string, categoryName: string, image_path: string): Promise<AssetModelsPage> {
         await this.assetModelName.fill(name);
-        await this.categoryNameDropDown.click();
-        await this.page.getByText(categoryName).click();
+        await this.categoryNameDropDown.click({ force: true });
+        await this.page.getByText(categoryName).click({ force: true });
         await this.fileUploadButton.setInputFiles(image_path)
 
-        await this.saveButton.click();
+        await this.saveButton.click({ force: true });
 
         return new AssetModelsPage(this.page);
     }
