@@ -9,6 +9,15 @@ export class AssetModelsRepository {
 
     private readonly findAssetByNameSQL = "SELECT image FROM models WHERE name = ? LIMIT 1;";
 
+    private async withConnection<T>(fn: (conn: PoolConnection) => Promise<T>) {
+        const conn = await this.getConnection();
+        try {
+            return await fn(conn);
+        } finally {
+            this.releaseConnection();
+        }
+    }
+
     // TODO: refactor to parent
     constructor(database_connection_provider: MySQLConnections) {
         this.database_connection_provider = database_connection_provider;
@@ -26,13 +35,11 @@ export class AssetModelsRepository {
     }
 
     async findByName(name: string): Promise<AssetModel | null> {
-        const conn = await this.getConnection();
-
-        const [assetModels] = await conn.query<AssetModel[]>(this.findAssetByNameSQL, name);
-        const assetModel = assetModels[0];
-
-        this.releaseConnection();
-
-        return assetModel;
+        return await this.withConnection(async (conn) => {
+            const [assetModels] = await conn.query<AssetModel[]>(this.findAssetByNameSQL, name);
+            const assetModel = assetModels[0];
+            return assetModel;
+        });
     }
+
 }
