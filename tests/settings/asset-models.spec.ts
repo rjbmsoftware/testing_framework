@@ -1,10 +1,9 @@
-import { expect } from "@playwright/test";
-import { test as base } from "../../libraries/extended-test";
 import { v4 as uuid } from "uuid";
 import { getComputerImageFixturePath } from "../../libraries/constants";
 import { AssetModelsRepository } from "../../libraries/data/asset-models-repository";
 import { CategoriesRepository } from "../../libraries/data/categories-repository";
 import { ModelsImageRepository } from "../../libraries/data/models-image-repository";
+import { test as base, expect } from "../../libraries/extended-test";
 import { assertExists } from "../../libraries/helpers";
 import { compareImages } from "../../libraries/image-comparison";
 import { CreateAssetModelPage } from "../../pages/settings/asset-models-create-page";

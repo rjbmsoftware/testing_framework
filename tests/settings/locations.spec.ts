@@ -1,8 +1,8 @@
-import { test as base, expect } from "@playwright/test";
-import { CreateLocationsPage } from "../../pages/settings/locations-create-page";
 import { v4 as uuid } from "uuid";
-import { LocationsPage } from "../../pages/settings/locations-page";
 import { LocationsRepository } from "../../libraries/data/locations-repository";
+import { test as base, expect } from "../../libraries/extended-test";
+import { CreateLocationsPage } from "../../pages/settings/locations-create-page";
+import { LocationsPage } from "../../pages/settings/locations-page";
 
 const test = base.extend<{
     createLocationsPage: CreateLocationsPage,

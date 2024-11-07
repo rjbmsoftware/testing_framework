@@ -1,22 +1,22 @@
-import { test as base, expect } from "@playwright/test";
-import { CreateCompanyPage } from "../../pages/settings/create-company-page";
 import { v4 as uuid } from "uuid";
-import { MySQLConnections } from "../../libraries/data/database-connection";
 import { CompaniesRepository } from "../../libraries/data/companies-repository";
+import { test as base, expect } from "../../libraries/extended-test";
 import { CompaniesPage } from "../../pages/settings/companies-page";
+import { CreateCompanyPage } from "../../pages/settings/create-company-page";
 
-const test = base.extend<{ createCompanyPage: CreateCompanyPage,
-                           companiesPage: CompaniesPage,
-                           companiesRepository: CompaniesRepository }>({
+const test = base.extend<{
+    createCompanyPage: CreateCompanyPage,
+    companiesPage: CompaniesPage,
+    companiesRepository: CompaniesRepository
+}>({
     createCompanyPage: async ({ page }, use) => {
         const createCompanyPage = new CreateCompanyPage(page);
         await createCompanyPage.goto();
         await use(createCompanyPage);
     },
 
-    companiesRepository: async ({ }, use) => {
-        let instance = MySQLConnections.getInstance();
-        const companiesRepository = new CompaniesRepository(instance);
+    companiesRepository: async ({ mySQLConnections }, use) => {
+        const companiesRepository = new CompaniesRepository(mySQLConnections);
         await use(companiesRepository);
     },
 

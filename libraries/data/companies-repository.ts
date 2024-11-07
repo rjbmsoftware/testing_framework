@@ -1,10 +1,8 @@
-import { PoolConnection } from "mysql2/promise";
+import { DataRepository } from "./data-repository";
 import { MySQLConnections } from "./database-connection";
 import { Company } from "./interfaces/company-interface";
 
-export class CompaniesRepository {
-    private readonly database_connection_provider: MySQLConnections;
-    private database_connection: PoolConnection;
+export class CompaniesRepository extends DataRepository {
 
     private readonly findCompanyByNameSQL = "SELECT * FROM companies WHERE name = ?;";
 
@@ -15,37 +13,23 @@ export class CompaniesRepository {
         (?, ?, ?, ?, NOW(), NOW());
 `;
 
-
     constructor(database_connection_provider: MySQLConnections) {
-        this.database_connection_provider = database_connection_provider;
-    }
-
-    async getConnection(): Promise<PoolConnection> {
-        this.database_connection = await this.database_connection_provider.getConnection();
-        return this.database_connection;
+        super(database_connection_provider)
     }
 
     async findCompanyByName(companyName: string): Promise<Company | undefined> {
-        let conn = await this.getConnection();
-
-        let [companies] = await conn.query<Company[]>(this.findCompanyByNameSQL, companyName);
-        let company: Company = companies[0];
-
-        this.releaseConnection();
+        let company = await this.withConnection(async (conn) => {
+            let [companies] = await conn.query<Company[]>(this.findCompanyByNameSQL, companyName);
+            return companies[0];
+        });
 
         return company;
     }
 
     async createCompany(name: string, phone: string, fax: string, email: string): Promise<void> {
-        let conn = await this.getConnection();
-
-        const args = [name, fax, phone, email];
-        await conn.execute(this.createCompanySQL, args);
-
-        this.releaseConnection();
-    }
-
-    releaseConnection(): void {
-        this.database_connection.release();
+        await this.withConnection(async (conn) => {
+            const args = [name, fax, phone, email];
+            await conn.execute(this.createCompanySQL, args);
+        });
     }
 }

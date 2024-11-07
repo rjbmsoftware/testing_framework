@@ -2,8 +2,6 @@ import { test as base } from "@playwright/test";
 import { MySQLConnections } from "./data/database-connection";
 
 
-// TODO: refactor so that common fixtures are extended from here,
-// the same for expect so they all import from the same file
 export const test = base.extend<{
     mySQLConnections: MySQLConnections
 }>({
@@ -12,3 +10,5 @@ export const test = base.extend<{
         await use(mySQLConnections);
     }
 });
+
+export { expect } from "@playwright/test";

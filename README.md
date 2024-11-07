@@ -13,13 +13,13 @@ A place for me to learn about building testing frameworks
 - [ ] Push reports to storage
 - [x] Fixtures that use the database
 - [x] Fixtures that use the products APIs
-- [ ] Page objects
+- [x] Page objects
 - [ ] Page object components
 - [x] Setup login in a way that it is not repeated per test
 - [ ] Document how to run the project
 - [ ] Tests
     - [x] Object creation
     - [x] Object deletion
-    - [ ] File upload
-    - [ ] Download a file
+    - [x] File upload
+    - [x] Download a file
     - [ ] Visual tests (BackstopJS)

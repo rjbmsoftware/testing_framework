@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect } from '../libraries/extended-test';
 import { AssetsPage } from '../pages/assets-hardware-page';
 
 const test = base.extend<{ assetsPage: AssetsPage }>({
@@ -10,5 +10,5 @@ const test = base.extend<{ assetsPage: AssetsPage }>({
 });
 
 test('page heading is all assets', async ({ assetsPage }) => {
-    await expect(assetsPage.pageHeading).toHaveText("All Assets")
+  await expect(assetsPage.pageHeading).toHaveText("All Assets")
 });
