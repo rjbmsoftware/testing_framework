@@ -14,6 +14,7 @@ export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
   globalTeardown: require.resolve('./global-teardown'),
   testDir: './tests',
+  snapshotPathTemplate: '{testDir}/__screenshots__/{platform}/{projectName}-{testFilePath}{arg}{ext}',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

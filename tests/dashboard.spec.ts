@@ -12,3 +12,7 @@ const test = base.extend<{ dashboardPage: DashboardPage }>({
 test('dashboard title test', async ({ dashboardPage }) => {
   await expect(dashboardPage.page).toHaveTitle(/Dashboard :: Mega IT Corporate 9000!/);
 });
+
+test('dashboard playwright screen shot', async ({ dashboardPage }) => {
+  await expect(dashboardPage.page).toHaveScreenshot();
+});
