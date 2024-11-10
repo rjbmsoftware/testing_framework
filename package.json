@@ -11,7 +11,8 @@
     "@playwright/test": "^1.47.0",
     "@types/node": "^22.5.4",
     "@types/uuid": "^10.0.0",
-    "axios": "^1.7.7"
+    "axios": "^1.7.7",
+    "backstopjs": "^6.3.25"
   },
   "dependencies": {
     "@types/pixelmatch": "^5.2.6",
