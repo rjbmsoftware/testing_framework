@@ -23,10 +23,3 @@ test('dashboard title test', async ({ dashboardPage }) => {
 test('dashboard playwright screen shot', async ({ dashboardPage }) => {
   await expect(dashboardPage.page).toHaveScreenshot();
 });
-
-/**
- * Generate reference and actual screenshots for comparison by backstop js
- */
-test('visually compare menu', async ({ dashboardPage }) => {
-  // TODO 
-});

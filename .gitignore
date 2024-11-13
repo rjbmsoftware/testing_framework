@@ -135,3 +135,8 @@ dist
 /playwright/.auth
 /notes.txt
 /temporary-files/*
+
+
+# backstop
+backstop_data/html_report/*
+backstop_data/bitmaps_test/*
